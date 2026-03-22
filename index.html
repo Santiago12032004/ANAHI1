@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para Anahí 🌻</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background-color: #050505;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 160px 120px, #ddd, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Pantalla de inicio para activar la música */
+        #start-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #050505;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease-out;
+        }
+
+        #start-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #start-btn {
+            background: transparent;
+            border: 2px solid #ffeb3b;
+            color: #ffeb3b;
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 235, 59, 0.5), inset 0 0 15px rgba(255, 235, 59, 0.3);
+            text-shadow: 0 0 8px #ffeb3b;
+            animation: pulseBtn 2s infinite;
+        }
+
+        @keyframes pulseBtn {
+            0% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 235, 59, 0.5); }
+            50% { transform: scale(1.05); box-shadow: 0 0 25px rgba(255, 235, 59, 0.8); }
+            100% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 235, 59, 0.5); }
+        }
+
+        /* Elementos de la galaxia (ocultos inicialmente) */
+        #galaxy-content {
+            opacity: 0;
+            transition: opacity 2s ease-in;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #galaxy-content.show {
+            opacity: 1;
+        }
+
+        .title {
+            position: absolute;
+            top: 8%;
+            width: 100%;
+            text-align: center;
+            color: #fffde7;
+            font-size: 2.2rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px #ffeb3b, 0 0 20px #ffeb3b, 0 0 40px #f57f17;
+            z-index: 10;
+        }
+
+        .galaxy-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 350px;
+            height: 120px;
+            margin-top: -60px;
+            margin-left: -175px;
+            border-radius: 50%;
+            background: radial-gradient(ellipse at center, rgba(255,235,59,0.1) 0%, rgba(0,0,0,0) 70%);
+            border: 2px solid rgba(255, 235, 59, 0.5);
+            box-shadow: 0 0 30px #ffeb3b, inset 0 0 30px #ffeb3b, 0 0 60px #f57f17;
+            transform: rotateX(70deg);
+            z-index: 1;
+        }
+
+        .main-message {
+            position: relative;
+            z-index: 20;
+            text-align: center;
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.8), 0 0 15px #ffeb3b;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(2px);
+        }
+
+        .main-message h1 { font-size: 2rem; margin: 0 0 15px 0; color: #ffeb3b; }
+        .main-message p { font-size: 1.2rem; margin: 8px 0; font-weight: 500; }
+
+        .floating-element {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.95rem;
+            text-shadow: 0 0 5px #ffeb3b;
+            white-space: nowrap;
+            z-index: 5;
+            animation: float 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-15px); }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="start-screen">
+        <button id="start-btn">Toca aquí 🌻</button>
+    </div>
+
+    <div id="galaxy-content">
+        <div class="title">Feliz día de las<br>Flores Amarillas 🌻</div>
+        <div class="galaxy-ring"></div>
+        <div class="main-message">
+            <h1>Anahí</h1>
+            <p>Gracias por tu amistad</p>
+            <p>Eres única</p>
+            <p>Nunca cambies</p>
+            <p>Te quiero mucho</p>
+        </div>
+        <div id="floating-container"></div>
+    </div>
+
+    <script>
+        const startBtn = document.getElementById('start-btn');
+        const startScreen = document.getElementById('start-screen');
+        const bgMusic = document.getElementById('bg-music');
+        const galaxyContent = document.getElementById('galaxy-content');
+        const floatingContainer = document.getElementById('floating-container');
+
+        const compliments = [
+            "Pura luz ✨", "Siempre brillas", "Tu vibra es genial", 
+            "Sonríe siempre", "Una gran amiga", "Súper auténtica", 
+            "Persona increíble", "Inspiras confianza", "Alegras el ambiente", 
+            "Genial y divertida", "Tienes un gran corazón", "Siempre positiva",
+            "🌻", "🌻", "🌻"
+        ];
+
+        // Función para generar las frases flotantes
+        function generateGalaxy() {
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+
+            compliments.forEach((text) => {
+                let el = document.createElement('div');
+                el.className = 'floating-element';
+                el.innerText = text;
+
+                let x, y;
+                do {
+                    x = Math.random() * (screenWidth - 100);
+                    y = Math.random() * (screenHeight - 50);
+                } while (
+                    x > screenWidth/2 - 150 && x < screenWidth/2 + 150 &&
+                    y > screenHeight/2 - 100 && y < screenHeight/2 + 100
+                );
+
+                el.style.left = `${x}px`;
+                el.style.top = `${y}px`;
+                el.style.fontSize = text === "🌻" ? "1.5rem" : (Math.random() * 0.3 + 0.8) + "rem";
+                el.style.animationDelay = (Math.random() * 5) + "s";
+                el.style.animationDuration = (Math.random() * 4 + 4) + "s";
+
+                floatingContainer.appendChild(el);
+            });
+        }
+
+        // Evento al tocar el botón
+        startBtn.addEventListener('click', () => {
+            // Ocultar pantalla de inicio
+            startScreen.classList.add('hidden');
+            
+            // Reproducir música
+            bgMusic.play();
+            
+            // Mostrar la galaxia y generar frases
+            galaxyContent.classList.add('show');
+            generateGalaxy();
+        });
+    </script>
+
+</body>
+</html>
